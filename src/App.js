@@ -5,21 +5,18 @@ import { Provider } from 'react-redux'
 
 //custom imports
 import Root from './components/Root'
-import configStore, { history } from './redux'
+import store, { history } from './redux'
 //style
-import '@ionic/core/css/core.css'
-import '@ionic/core/css/ionic.bundle.css'
-
-const store = configStore()
+import './styles/index.scss'
 
 function App() {
   return (
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <BrowserRouter>
+      <BrowserRouter>
+        <ConnectedRouter history={history}>
           <Root />
-        </BrowserRouter>
-      </ConnectedRouter>
+        </ConnectedRouter>
+      </BrowserRouter>
     </Provider>
   )
 }

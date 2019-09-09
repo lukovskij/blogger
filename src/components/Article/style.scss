@@ -1,0 +1,6 @@
+@import '../../styles/vars';
+.article-item {
+  &__time {
+    color: $nonActiveColor;
+  }
+}
