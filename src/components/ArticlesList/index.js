@@ -1,13 +1,13 @@
 import React from 'react'
-import { IonList } from '@ionic/react'
 import Article from '../Article'
+
+import './style.scss'
 
 export default function ArticleList() {
   return (
-    <>
-      <IonList>
-        <Article />
-      </IonList>
-    </>
+    <div className="article-list">
+      <Article />
+      <Article />
+    </div>
   )
 }
