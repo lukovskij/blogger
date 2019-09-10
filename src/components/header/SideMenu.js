@@ -10,8 +10,10 @@ import {
   IonTitle,
   IonItem,
 } from '@ionic/react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import headerContainer from '../../containers/headerContainer'
+
+import './style.scss'
 
 class SideMenu extends Component {
   constructor(props) {
@@ -34,7 +36,9 @@ class SideMenu extends Component {
                 <IonItem>
                   <IonIcon name={link.icon}></IonIcon>
                   {link.title.toLowerCase() === 'logout' ? (
-                    <Link
+                    <NavLink
+                      exact
+                      activeClassName="active"
                       onClick={() => {
                         this.props.signOutHandler()
                       }}
@@ -43,11 +47,17 @@ class SideMenu extends Component {
                       to={link.path}
                     >
                       {link.title}
-                    </Link>
+                    </NavLink>
                   ) : (
-                    <Link replace className="sidemenu-link" to={link.path}>
+                    <NavLink
+                      exact
+                      activeClassName="active"
+                      replace
+                      className="sidemenu-link"
+                      to={link.path}
+                    >
                       {link.title}
-                    </Link>
+                    </NavLink>
                   )}
                 </IonItem>
               </IonMenuToggle>

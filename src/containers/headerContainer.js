@@ -5,7 +5,6 @@ import { moduleName, signOutAC } from '../ducks/auth'
 export default function headerContainer(OriginalComponent) {
   class HeaderContainer extends Component {
     checkCurrentLinks = () => {
-      console.log(this.props)
       if (this.props.loggin)
         return [
           { title: 'Home', path: '/', icon: 'home' },

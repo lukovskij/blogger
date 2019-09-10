@@ -30,10 +30,6 @@ const defaultState = {
 export default function(state = {}, action) {
   const { type, payload } = action
   switch (type) {
-    case '@@router/LOCATION_CHANGE': {
-      console.log('dddd')
-      return state
-    }
     case SIGN_UP_REQUEST:
     case SIGN_UP_REQUEST:
       return { ...state, loading: true }
@@ -70,14 +66,16 @@ export const signInAC = (email, password, remember = false) => {
   }
 }
 
-export const checkLogginUserAC = () => {
+export const checkLogginUserAC = (path = '') => {
   return {
     type: CHECK_LOGGIN_USER,
+    payload: {
+      path,
+    },
   }
 }
 
 export const signOutAC = () => {
-  console.log('ddsa')
   return {
     type: SIGN_OUT_REQUEST,
   }
@@ -85,7 +83,7 @@ export const signOutAC = () => {
 //saggas
 export const checkLogginUserSaga = function*() {
   while (true) {
-    yield take(CHECK_LOGGIN_USER)
+    let { payload } = yield take(CHECK_LOGGIN_USER)
 
     let user = JSON.parse(window.localStorage.getItem('user'))
     if (user !== null) {
@@ -94,6 +92,7 @@ export const checkLogginUserSaga = function*() {
         payload: {
           email: user.email,
           password: user.password,
+          path: payload.path,
         },
       })
     }
@@ -109,6 +108,11 @@ export const signUpSaga = function*() {
           email: payload.email,
           password: payload.password,
         },
+      })
+      //set header to axios
+      axios.interceptors.request.use(function(config) {
+        config.headers.authorization = `Token ${res.data.user.token}`
+        return config
       })
       yield put({
         type: SIGN_UP_SUCCESS,
@@ -138,10 +142,20 @@ export const signInSaga = function*() {
           user: res.data.user,
         },
       })
+      //set header to axios
+      axios.interceptors.request.use(function(config) {
+        config.headers.authorization = `Token ${res.data.user.token}`
+        return config
+      })
+
       if (payload.remember) {
         window.localStorage.setItem('user', JSON.stringify({ ...payload }))
       }
-      yield put(push('/'))
+      if (payload.path) {
+        yield put(push(payload.path))
+      } else {
+        yield put(push('/'))
+      }
     } catch (error) {
       yield put({
         type: SIGN_IN_ERROR,
@@ -158,6 +172,11 @@ export const signOutSaga = function*() {
       window.localStorage.clear()
       yield put({
         type: SIGN_OUT_SUCCES,
+      })
+      //set header to axios
+      axios.interceptors.request.use(function(config) {
+        config.headers.authorization = ``
+        return config
       })
     } catch (error) {}
   }

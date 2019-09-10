@@ -3,11 +3,13 @@ import Article from '../Article'
 
 import './style.scss'
 
-export default function ArticleList() {
+export default function ArticleList(props) {
+  const { articles } = props
   return (
     <div className="article-list">
-      <Article />
-      <Article />
+      {articles.map(it => (
+        <Article toggleLikeHandler={props.toggleLikeHandler} key={it.slug} article={it} />
+      ))}
     </div>
   )
 }

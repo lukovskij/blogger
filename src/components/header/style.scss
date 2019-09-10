@@ -1,0 +1,9 @@
+.sidemenu-link {
+  color: var(--ion-color-primary);
+
+  &:hover,
+  &.active {
+    color: var(--ion-color-success);
+    text-decoration: none;
+  }
+}

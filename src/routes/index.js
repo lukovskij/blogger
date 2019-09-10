@@ -7,14 +7,9 @@ import ProfilePage from '../pages/ProfilePage'
 import SettingsPage from '../pages/SettingsPage'
 import NewArticlePage from '../pages/NewArticlePage'
 import ErrorPage from '../pages/404'
-import { connect } from 'react-redux'
-import { moduleName, checkLogginUserAC } from '../ducks/auth'
 import ProtectedRoute from '../containers/ProtectedRoute'
 
 class Routes extends Component {
-  componentDidMount() {
-    this.props.checkLogginUserAC()
-  }
   render() {
     return (
       <>
@@ -34,10 +29,4 @@ class Routes extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {}
-}
-export default connect(
-  null,
-  { checkLogginUserAC },
-)(Routes)
+export default Routes
