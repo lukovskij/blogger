@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 import './style.scss'
 
-export default function Article({ article, toggleLikeHandler }) {
+export default function Article({ article, toggleLikeHandler, userId }) {
   return (
     <div className="article-item">
       <div className="article-item__header">
@@ -19,7 +19,9 @@ export default function Article({ article, toggleLikeHandler }) {
             />
           </IonAvatar>
           <div className="article-item__user-info">
-            <h3 className="article-item__username">{article.author.username}</h3>
+            <h3 className="article-item__username">
+              <Link to={`/profile/${article.author.username}`}>{article.author.username}</Link>
+            </h3>
             <p className="article-item__date">{moment(article.createdAt).format('MMMM DD YYYY')}</p>
           </div>
         </div>
@@ -39,10 +41,18 @@ export default function Article({ article, toggleLikeHandler }) {
       <div className="article-item__footer">
         <Link to={`/article/${article.slug}`}>
           <IonButton size="small" color="secondary">
-            {' '}
             Read More
           </IonButton>
         </Link>
+
+        {article.author.username === userId ? (
+          <Link to={`/editor/${article.slug}`}>
+            <IonButton size="small" color="secondary">
+              Edit
+            </IonButton>
+          </Link>
+        ) : null}
+
         <div className="article-item__tags">
           {article.tagList.map(it => (
             <IonChip outline key={it}>

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { IonToolbar, IonHeader, IonTitle, IonContent } from '@ionic/react'
-import ArticlesList from '../../components/ArticlesList'
 import ArticlesListContainer from '../../containers/ArticlesListContainer'
+import { connect } from 'react-redux'
+import { moduleName as authModule } from '../../ducks/auth'
 
-export default class HomePage extends Component {
+class HomePage extends Component {
   render() {
     return (
       <>
@@ -19,3 +20,5 @@ export default class HomePage extends Component {
     )
   }
 }
+
+export default HomePage

@@ -1,0 +1,41 @@
+.profile-info {
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+
+  &__avatar {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+  }
+  &__profile {
+    align-items: center;
+    display: flex;
+    .date {
+      color: var(--ion-color-medium);
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+  }
+
+  &__likes {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    width: 50px;
+    justify-content: center;
+    height: 30px;
+    color: var(--ion-color-success-tint);
+    border: 2px solid var(--ion-color-success-tint);
+    border-radius: 3px;
+
+    .count {
+      margin-left: 3px;
+      color: var(--ion-color-success-tint);
+    }
+  }
+}

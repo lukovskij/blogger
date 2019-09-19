@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonCard,
   IonLabel,
@@ -10,12 +7,19 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonImg,
-  IonAvatar,
   IonItem,
   IonCardSubtitle,
+  IonButton,
+  IonButtons,
 } from '@ionic/react'
+import TitlePage from '../../components/TitlePage'
 import { connect } from 'react-redux'
-import { moduleName as articles, getArticleAC } from '../../ducks/articles'
+import { moduleName as articles, getArticleAC, removeArticleAC } from '../../ducks/articles'
+import { moduleName as authUser } from '../../ducks/auth'
+import { push } from 'connected-react-router'
+import Comments from '../../components/Comments'
+import ProfileInfoContainer from '../../containers/ProfileInfoContainer'
+import './style.scss'
 class ArticlePage extends Component {
   componentWillMount() {
     this.props.getArticleAC(this.props.computedMatch.params.slug)
@@ -24,36 +28,53 @@ class ArticlePage extends Component {
     //const { article } = this.props
     return (
       <>
-        <IonHeader>
-          <IonToolbar>{this.checkTitle()}</IonToolbar>
-        </IonHeader>
-        <IonContent>{this.checkContent()}</IonContent>
+        <TitlePage>{this.checkTitle()}</TitlePage>
+        <IonContent scrollY={true}>{this.checkContent()}</IonContent>
       </>
     )
   }
 
   checkTitle = () => {
     if (this.props.article) {
-      return <IonTitle>Article name: {this.props.article.title}</IonTitle>
+      return <>Article name: {this.props.article.title}</>
     } else {
-      return <IonTitle>Please wait ...</IonTitle>
+      return <>Please wait ...</>
     }
   }
   checkContent = () => {
     if (Object.keys(this.props.article).length) {
       return (
-        <IonCard>
-          <IonImg src="https://picsum.photos/550/300" />
-          <IonCardHeader>
-            <IonCardSubtitle>
-              <IonItem lines="none">
-                <IonLabel>{'Written by  - ' + this.props.article.author.username}</IonLabel>
-              </IonItem>
-            </IonCardSubtitle>
-            <IonCardTitle>{this.props.article.description}</IonCardTitle>
+        <>
+          <IonCard className="article-page">
+            <IonImg src="https://picsum.photos/550/300" />
+            <IonCardHeader>
+              <IonCardSubtitle>
+                <IonItem lines="none">
+                  <IonLabel>{'Written by  - ' + this.props.article.author.username}</IonLabel>
+                </IonItem>
+              </IonCardSubtitle>
+              <IonCardTitle>{this.props.article.description}</IonCardTitle>
+            </IonCardHeader>
             <IonCardContent>{this.props.article.body}</IonCardContent>
-          </IonCardHeader>
-        </IonCard>
+            {this.props.authUser === this.props.article.author.username && (
+              <IonButtons>
+                <IonButton
+                  color="success"
+                  onClick={() => {
+                    this.props.push('/editor/' + this.props.article.slug)
+                  }}
+                >
+                  Edit Article
+                </IonButton>
+                <IonButton onClick={() => this.props.removeArticleAC(this.props.article.slug)}>
+                  Remove Article
+                </IonButton>
+              </IonButtons>
+            )}
+          </IonCard>
+          <ProfileInfoContainer />
+          <Comments />
+        </>
       )
     } else {
       return <h1>Please wait ...</h1>
@@ -64,9 +85,10 @@ class ArticlePage extends Component {
 const mapStateToProps = state => {
   return {
     article: state[articles].article,
+    authUser: state[authUser].user.username,
   }
 }
 export default connect(
   mapStateToProps,
-  { getArticleAC },
+  { getArticleAC, push, removeArticleAC },
 )(ArticlePage)

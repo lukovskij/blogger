@@ -1,0 +1,49 @@
+.comments-wrapp {
+  background: var(--ion-color-medium);
+}
+.comment-form {
+  padding: 10px;
+  &__text {
+    border: 1px solid var(--ion-color-light-shade);
+  }
+  &__options {
+    display: flex;
+    padding: 10px;
+    background: var(--ion-color-light-shade);
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.comment-list {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+.comment-item {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid var(--ion-color-light-shade);
+  &__text,
+  &__options {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+  }
+  &__options {
+    background: var(--ion-color-light-shade);
+    align-items: center;
+    font-size: 12px;
+    padding: 10px;
+  }
+  &__user {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    ion-avatar {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+.profile-card {
+  display: flex;
+  justify-content: center;
+  padding: 10px 15px;
+  flex-wrap: wrap;
+
+  &__name,
+  &__subtitle {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+  &__button {
+    margin-left: auto;
+  }
+}

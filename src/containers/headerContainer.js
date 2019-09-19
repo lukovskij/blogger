@@ -8,8 +8,8 @@ export default function headerContainer(OriginalComponent) {
       if (this.props.loggin)
         return [
           { title: 'Home', path: '/', icon: 'home' },
-          { title: 'My Profile', path: '/profile/' + this.props.user, icon: 'person' },
-          { title: 'New Article', path: '/newarticle', icon: 'create' },
+          { title: 'My Profile', path: '/profile/' + this.props.user.username, icon: 'person' },
+          { title: 'Add/Edit Article', path: '/editor', icon: 'create' },
           { title: 'Settings', path: '/settings', icon: 'settings' },
           { title: 'Logout', path: '/auth/signin', icon: 'log-out' },
         ]

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { IonToolbar, IonHeader, IonTitle } from '@ionic/react'
 import { connect } from 'react-redux'
 import { signUpAC, signInAC, moduleName } from '../../ducks/auth'
-import { Route, Redirect, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
+import TitlePage from '../../components/TitlePage'
 //custom components
 import SignUp from '../../components/LoginForm/SignUp'
 import SignIn from '../../components/LoginForm/SignIn'
@@ -13,11 +14,7 @@ class AuthPage extends Component {
   render() {
     return (
       <>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Auth page</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <TitlePage>Auth page</TitlePage>
         <Switch>
           <Route path="/auth/signin" render={this.renderComponent('signin')} />
           <Route path="/auth/signup" render={this.renderComponent('signup')} />

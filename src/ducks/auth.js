@@ -24,27 +24,33 @@ export const CHECK_LOGGIN_USER = `${prefix}/CHECK_LOGGIN_USER`
 const defaultState = {
   loading: false,
   loggin: false,
-  user: null,
+  user: {
+    bio: null,
+    createdAt: null,
+    email: null,
+    id: null,
+    image: null,
+    token: null,
+    updatedAt: null,
+    username: null,
+  },
   error: null,
 }
-export default function(state = {}, action) {
+export default function(state = defaultState, action) {
   const { type, payload } = action
   switch (type) {
-    case SIGN_UP_REQUEST:
+    case SIGN_IN_REQUEST:
     case SIGN_UP_REQUEST:
       return { ...state, loading: true }
     case SIGN_IN_SUCCESS:
-      return { ...state, loading: false, user: { ...payload.user }, error: null, loggin: true }
     case SIGN_UP_SUCCESS:
       return { ...state, loading: false, user: { ...payload.user }, error: null, loggin: true }
-    case SIGN_IN_REQUEST:
-      return { ...state, loading: true }
     case SIGN_OUT_SUCCES:
       return { ...defaultState }
     case SIGN_IN_ERROR:
     case SIGN_UP_ERROR:
     case SIGN_OUT_ERROR:
-      return { ...state, error: payload.error }
+      return { ...state, error: payload.error, loading: false }
     default:
       return state
   }
@@ -80,22 +86,17 @@ export const signOutAC = () => {
     type: SIGN_OUT_REQUEST,
   }
 }
-//saggas
+
+//sagas
 export const checkLogginUserSaga = function*() {
   while (true) {
     let { payload } = yield take(CHECK_LOGGIN_USER)
-
-    let user = JSON.parse(window.localStorage.getItem('user'))
-    if (user !== null) {
-      yield put({
-        type: SIGN_IN_REQUEST,
-        payload: {
-          email: user.email,
-          password: user.password,
-          path: payload.path,
-        },
-      })
-    }
+    yield put({
+      type: SIGN_IN_REQUEST,
+      payload: {
+        path: payload.path,
+      },
+    })
   }
 }
 export const signUpSaga = function*() {
@@ -109,11 +110,7 @@ export const signUpSaga = function*() {
           password: payload.password,
         },
       })
-      //set header to axios
-      axios.interceptors.request.use(function(config) {
-        config.headers.authorization = `Token ${res.data.user.token}`
-        return config
-      })
+
       yield put({
         type: SIGN_UP_SUCCESS,
         payload: {
@@ -133,27 +130,31 @@ export const signInSaga = function*() {
   while (true) {
     try {
       const { payload } = yield take(SIGN_IN_REQUEST)
-      const res = yield call(axios.post, `${API_ENDPOINT}users/login`, {
-        user: { email: payload.email, password: payload.password },
-      })
-      yield put({
-        type: SIGN_IN_SUCCESS,
-        payload: {
-          user: res.data.user,
-        },
-      })
-      //set header to axios
-      axios.interceptors.request.use(function(config) {
-        config.headers.authorization = `Token ${res.data.user.token}`
-        return config
-      })
 
-      if (payload.remember) {
-        window.localStorage.setItem('user', JSON.stringify({ ...payload }))
-      }
-      if (payload.path) {
+      let token = window.localStorage.getItem('token')
+
+      if (token) {
+        let resUser = yield call(axios.get, `${API_ENDPOINT}user`, {
+          headers: { authorization: `Token ${token}` },
+        })
+        yield put({
+          type: SIGN_IN_SUCCESS,
+          payload: {
+            user: resUser.data.user,
+          },
+        })
         yield put(push(payload.path))
       } else {
+        const res = yield call(axios.post, `${API_ENDPOINT}users/login`, {
+          user: { email: payload.email, password: payload.password },
+        })
+        yield put({
+          type: SIGN_IN_SUCCESS,
+          payload: {
+            user: res.data.user,
+          },
+        })
+        window.localStorage.setItem('token', res.data.user.token)
         yield put(push('/'))
       }
     } catch (error) {
@@ -174,10 +175,6 @@ export const signOutSaga = function*() {
         type: SIGN_OUT_SUCCES,
       })
       //set header to axios
-      axios.interceptors.request.use(function(config) {
-        config.headers.authorization = ``
-        return config
-      })
     } catch (error) {}
   }
 }
