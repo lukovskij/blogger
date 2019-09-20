@@ -5,6 +5,7 @@ import { connectRouter } from 'connected-react-router'
 import auth, { moduleName as authModule } from '../ducks/auth'
 import articles, { moduleName as articlesModule } from '../ducks/articles'
 import user, { moduleName as userModulde } from '../ducks/user'
+import comments, { moduleName as commentsModule } from '../ducks/comments'
 
 const createRootReducer = history =>
   combineReducers({
@@ -12,6 +13,7 @@ const createRootReducer = history =>
     [authModule]: auth,
     [articlesModule]: articles,
     [userModulde]: user,
+    [commentsModule]: comments,
   })
 
 export default createRootReducer

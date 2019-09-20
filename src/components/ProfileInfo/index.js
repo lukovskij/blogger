@@ -6,13 +6,17 @@ import LikeButton from '../UI/LikeButton'
 import './style.scss'
 
 export default function ProfileInfo(props) {
-  console.log(props)
   return (
     <IonCard className="profile-info">
       <div className="profile-info__user">
         <Link className="profile-info__profile" to={'/profile/' + props.author.username}>
           <IonAvatar className="profile-info__avatar" slot="start">
-            <img src={props.author.image} />
+            <img
+              src={
+                props.author.image ||
+                'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/79/79c76fcd5a2626ea2a6b0d015eca8a561b8a5025_full.jpg'
+              }
+            />
           </IonAvatar>
           <div className="date-name">
             <div className="name">{props.author.username}</div>

@@ -51,7 +51,9 @@ export default class SignUp extends Component {
               <IonButton onClick={this.sendDataHandler} color="primary">
                 Sign Up
               </IonButton>
-              <Link to="/auth/signin">Login</Link>
+              <IonButton color="success">
+                <Link to="/auth/signin">Login</Link>
+              </IonButton>
             </IonList>
           </form>
         </IonContent>

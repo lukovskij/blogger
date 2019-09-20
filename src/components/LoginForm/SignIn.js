@@ -42,20 +42,12 @@ export default class SignIn extends Component {
                   placeholder="Password"
                 />
               </IonItem>
-              <IonItem>
-                <label>
-                  Remember me
-                  <input
-                    type="checkbox"
-                    checked={this.state.remember}
-                    onChange={this.onChangeHandler('remember')}
-                  />
-                </label>
-              </IonItem>
               <IonButton onClick={this.sendDataHandler} color="primary">
                 Sign In
               </IonButton>
-              <Link to={`/auth/signup`}>Registration</Link>
+              <IonButton color="success">
+                <Link to={`/auth/signup`}>Registration</Link>
+              </IonButton>
             </IonList>
           </form>
         </IonContent>

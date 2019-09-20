@@ -19,17 +19,21 @@ class Routes extends Component {
   render() {
     return (
       <>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/auth/signin" component={AuthPage} />
-          <Route path="/auth/signup" component={AuthPage} />
-          <ProtectedRoute path="/article/:slug" component={ArticlePage} />
-          <ProtectedRoute path="/profile/:authorname?" component={ProfilePage} />
-          <ProtectedRoute path="/settings" component={SettingsPage} />
-          <ProtectedRoute path="/editor/:editId?" component={EditArticlePage} />
-          <Redirect from="*" to="/404" />
-          <Route path="/404" component={ErrorPage}></Route>
-        </Switch>
+        {this.props.loading ? (
+          <Preloader show={this.props.loading} />
+        ) : (
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/auth/signin" component={AuthPage} />
+            <Route path="/auth/signup" component={AuthPage} />
+            <ProtectedRoute path="/article/:slug" component={ArticlePage} />
+            <ProtectedRoute path="/profile/:authorname?" component={ProfilePage} />
+            <ProtectedRoute path="/settings" component={SettingsPage} />
+            <ProtectedRoute path="/editor/:editId?" component={EditArticlePage} />
+            <Redirect from="*" to="/404" />
+            <Route path="/404" component={ErrorPage}></Route>
+          </Switch>
+        )}
       </>
     )
   }

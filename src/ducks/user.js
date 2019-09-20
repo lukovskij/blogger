@@ -23,7 +23,7 @@ const defaultState = {
     image: null,
     username: null,
   },
-  loading: false,
+  loading: true,
   error: null,
 }
 
@@ -37,7 +37,7 @@ export default function(state = defaultState, action) {
       return { ...state, loading: true }
     case EDIT_USER_SUCCESS:
     case GET_USER_SUCCESS:
-      return { ...state, loading: false, user: { ...payload }, error: null, loggin: true }
+      return { ...state, loading: false, user: { ...payload }, error: null }
     case TOGGLE_FOLLOW_USER_SUCCESS:
       return { ...state, loading: false, user: { ...payload } }
     case EDIT_USER_ERROR:
@@ -75,7 +75,6 @@ export const toggleFollowAC = id => {
   }
 }
 //saggas
-let token = window.localStorage.getItem('token')
 
 export const toggleFollowSaga = function*() {
   while (true) {
@@ -90,12 +89,16 @@ export const toggleFollowSaga = function*() {
           `${API_ENDPOINT}profiles/${payload.id}/follow`,
           {},
           {
-            headers: { authorization: `Token ${token}` },
+            headers: {
+              authorization: `Token ${window.localStorage.getItem('token')}`,
+            },
           },
         )
       } else {
         res = yield call(axios.delete, `${API_ENDPOINT}profiles/${payload.id}/follow`, {
-          headers: { authorization: `Token ${token}` },
+          headers: {
+            authorization: `Token ${window.localStorage.getItem('token')}`,
+          },
         })
       }
       console.log(res.data.profile)
@@ -117,11 +120,14 @@ export const toggleFollowSaga = function*() {
 export const getUserSaga = function*() {
   while (true) {
     let { payload } = yield take(GET_USER_REQUEST)
+    console.log('id', payload.id)
     try {
       let res = yield call(axios.get, `${API_ENDPOINT}profiles/${payload.id}`, {
-        headers: { authorization: `Token ${token}` },
+        headers: {
+          authorization: `Token ${window.localStorage.getItem('token')}`,
+        },
       })
-      console.log(res.data.profile)
+      console.log('---from saga', res.data.profile)
       yield put({
         type: GET_USER_SUCCESS,
         payload: {
@@ -153,7 +159,9 @@ export const editUserSaga = function*() {
           },
         },
         {
-          headers: { authorization: `Token ${token}` },
+          headers: {
+            authorization: `Token ${window.localStorage.getItem('token')}`,
+          },
         },
       )
       yield put({

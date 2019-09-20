@@ -2,18 +2,20 @@ import React, { Component } from 'react'
 import ProfileInfo from '../components/ProfileInfo'
 import { moduleName as userModule, toggleFollowAC, getUserAC } from '../ducks/user'
 import { moduleName as authModule } from '../ducks/auth'
-import { moduleName as articlesModule, toggleArticleAC } from '../ducks/articles'
+import { toggleArticleAC } from '../ducks/articles'
 import { connect } from 'react-redux'
 
 class ProfileInfoContainer extends Component {
   componentDidMount() {
-    this.props.getUserAC(this.props.username)
+    // this.props.getUserAC(this.props.username)
   }
   render() {
     const { username, ...pasProps } = this.props
+    console.log(this.props)
     return (
       <ProfileInfo
         {...pasProps}
+        author={this.props.article.author}
         toggleLikeHandler={this.props.toggleArticleAC}
         togglFollowHandler={this.props.toggleFollowAC}
       />
@@ -22,12 +24,11 @@ class ProfileInfoContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { author, ...rest } = state[articlesModule].article
+  console.log(state[userModule].user)
   return {
-    author: state[userModule].user,
-    article: rest,
+    //author: state[userModule].user,
     authUser: state[authModule].user,
-    username: author.username,
+    username: ownProps.article.author.username,
     ...ownProps,
   }
 }

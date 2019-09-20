@@ -33,6 +33,7 @@ const defaultState = {
   loading: false,
   error: null,
   article: {},
+  articlesCount: 0,
   articleToEdit: {
     title: null,
     description: null,
@@ -57,8 +58,15 @@ export default function(state = defaultState, action) {
     case GET_EDIT_ARTICLE_SUCCESS:
     case SEND_EDIT_ARTICLE_SUCCESS:
       return { ...state, loading: false, articleToEdit: { ...payload } }
-    case GET_ARTICLES_SUCCESS:
-      return { ...state, loading: false, entities: [...payload.articles] }
+    case GET_ARTICLES_SUCCESS: {
+      console.log(payload)
+      return {
+        ...state,
+        loading: false,
+        entities: [...payload.articles],
+        articlesCount: payload.articlesCount,
+      }
+    }
     case GET_ARTICLE_SUCCESS:
       return { ...state, loading: false, article: payload.article }
 
@@ -156,7 +164,6 @@ export const removeArticleAC = id => {
 //selectors
 
 //sagas
-let token = window.localStorage.getItem('token')
 const removeArticlSaga = function*() {
   while (true) {
     let { payload } = yield take(REMOVE_ARTICLE_REQUEST)
@@ -164,7 +171,7 @@ const removeArticlSaga = function*() {
     try {
       let res = yield call(axios.delete, `${API_ENDPOINT}articles/${payload.id}`, {
         headers: {
-          authorization: `Token ${token}`,
+          authorization: `Token ${window.localStorage.getItem('token')}`,
         },
       })
       yield put({
@@ -196,7 +203,7 @@ const sendEditArticleSaga = function*() {
         },
         {
           headers: {
-            authorization: `Token ${token}`,
+            authorization: `Token ${window.localStorage.getItem('token')}`,
           },
         },
       )
@@ -221,7 +228,7 @@ const getEditArticleSaga = function*() {
     try {
       let res = yield call(axios.get, `${API_ENDPOINT}articles/${payload.id}`, {
         headers: {
-          authorization: `Token ${token}`,
+          authorization: `Token ${window.localStorage.getItem('token')}`,
         },
       })
       yield put({
@@ -257,7 +264,9 @@ const addArticleSaga = function*() {
           },
         },
         {
-          headers: { authorization: `Token ${token}` },
+          headers: {
+            authorization: `Token ${window.localStorage.getItem('token')}`,
+          },
         },
       )
       yield put(push('/article/' + res.data.article.slug))
@@ -272,13 +281,20 @@ const addArticleSaga = function*() {
 const getArticlesSaga = function*() {
   while (true) {
     let { payload } = yield take(GET_ARTICLES_REQUEST)
+    let token = window.localStorage.getItem('token')
+    let header = {}
+    if (token) {
+      header = {
+        authorization: `Token ${window.localStorage.getItem('token')}`,
+      }
+    }
     try {
-      let res = yield call(axios.get, `${API_ENDPOINT}articles`, {
-        headers: { authorization: `Token ${token}` },
+      let res = yield call(axios.get, `${API_ENDPOINT}articles${payload.params}`, {
+        headers: header,
       })
       yield put({
         type: GET_ARTICLES_SUCCESS,
-        payload: { articles: res.data.articles },
+        payload: { articles: res.data.articles, articlesCount: res.data.articlesCount },
       })
     } catch (error) {
       yield put({
@@ -304,10 +320,14 @@ const toggleLikeSaga = function*() {
         axios[method],
         `${API_ENDPOINT}articles/${payload.id}/favorite`,
         {
-          headers: { authorization: `Token ${token}` },
+          headers: {
+            authorization: `Token ${window.localStorage.getItem('token')}`,
+          },
         },
         {
-          headers: { authorization: `Token ${token}` },
+          headers: {
+            authorization: `Token ${window.localStorage.getItem('token')}`,
+          },
         },
       )
 
@@ -331,7 +351,9 @@ const getAerticleSaga = function*() {
     let { payload } = yield take(GET_ARTICLE_REQUEST)
     try {
       let res = yield call(axios.get, `${API_ENDPOINT}articles/${payload.id}`, {
-        headers: { authorization: `Token ${token}` },
+        headers: {
+          authorization: `Token ${window.localStorage.getItem('token')}`,
+        },
       })
       yield put({
         type: GET_ARTICLE_SUCCESS,

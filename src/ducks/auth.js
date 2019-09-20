@@ -22,7 +22,7 @@ export const CHECK_LOGGIN_USER = `${prefix}/CHECK_LOGGIN_USER`
 
 //reducer
 const defaultState = {
-  loading: false,
+  loading: true,
   loggin: false,
   user: {
     bio: null,
@@ -134,6 +134,7 @@ export const signInSaga = function*() {
       let token = window.localStorage.getItem('token')
 
       if (token) {
+        console.log('call')
         let resUser = yield call(axios.get, `${API_ENDPOINT}user`, {
           headers: { authorization: `Token ${token}` },
         })

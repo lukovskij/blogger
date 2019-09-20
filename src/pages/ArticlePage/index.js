@@ -11,6 +11,7 @@ import {
   IonCardSubtitle,
   IonButton,
   IonButtons,
+  IonChip,
 } from '@ionic/react'
 import TitlePage from '../../components/TitlePage'
 import { connect } from 'react-redux'
@@ -55,7 +56,17 @@ class ArticlePage extends Component {
               </IonCardSubtitle>
               <IonCardTitle>{this.props.article.description}</IonCardTitle>
             </IonCardHeader>
-            <IonCardContent>{this.props.article.body}</IonCardContent>
+            <IonCardContent>
+              {this.props.article.body}
+              <div className="article-page__tags">
+                {' '}
+                {this.props.article.tagList.map(it => (
+                  <IonChip key={it}>
+                    <IonLabel>{it}</IonLabel>
+                  </IonChip>
+                ))}
+              </div>
+            </IonCardContent>
             {this.props.authUser === this.props.article.author.username && (
               <IonButtons>
                 <IonButton
@@ -72,7 +83,7 @@ class ArticlePage extends Component {
               </IonButtons>
             )}
           </IonCard>
-          <ProfileInfoContainer />
+          <ProfileInfoContainer article={this.props.article} />
           <Comments />
         </>
       )
