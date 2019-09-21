@@ -21,7 +21,6 @@ class SideMenu extends Component {
   }
 
   render() {
-    console.log(this.props.signOutHandler)
     return (
       <IonMenu side="start" menuId="first" contentId="main">
         <IonHeader>

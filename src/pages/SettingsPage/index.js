@@ -7,6 +7,8 @@ import {
   IonCard,
   IonButton,
   IonTextarea,
+  IonFooter,
+  IonPage,
 } from '@ionic/react'
 import TitlePage from '../../components/TitlePage'
 import './style.scss'
@@ -30,59 +32,61 @@ class SettingsPage extends Component {
     }
   }
   saveHandler = () => {
-    console.log('ddd')
     this.props.editUserAC(this.state)
   }
   render() {
     return (
       <>
-        <TitlePage>Settings Profile</TitlePage>
-        <IonContent>
-          <IonCard>
-            <IonTitle className="profile-settings-label">Url to your avatar</IonTitle>
-            <IonItem>
-              <IonInput
-                onIonChange={this.onChangeHandler('image')}
-                value={this.state.image}
-              ></IonInput>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonTitle className="profile-settings-label">Your login</IonTitle>
-            <IonItem>
-              <IonInput
-                onIonChange={this.onChangeHandler('username')}
-                value={this.state.username}
-              ></IonInput>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonTitle className="profile-settings-label">Your password</IonTitle>
-            <IonItem>
-              <IonInput
-                onIonChange={this.onChangeHandler('password')}
-                value={this.state.password}
-                type="password"
-              ></IonInput>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonTitle className="profile-settings-label">Your Bio</IonTitle>
-            <IonItem>
-              <IonTextarea
-                onIonChange={this.onChangeHandler('bio')}
-                value={this.state.bio}
-                autoGrow={true}
-              ></IonTextarea>
-            </IonItem>
-          </IonCard>
-          <IonCard className="profile-settings-submit">
-            <IonButton onClick={this.saveHandler}>Save setting</IonButton>
-            <IonButton color="danger" onClick={() => this.props.signOutAC()}>
-              Log out
-            </IonButton>
-          </IonCard>
-        </IonContent>
+        <IonPage>
+          <TitlePage>Settings Profile</TitlePage>
+          <IonContent>
+            <IonCard>
+              <IonTitle className="profile-settings-label">Url to your avatar</IonTitle>
+              <IonItem>
+                <IonInput
+                  onIonChange={this.onChangeHandler('image')}
+                  value={this.state.image}
+                ></IonInput>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonTitle className="profile-settings-label">Your login</IonTitle>
+              <IonItem>
+                <IonInput
+                  onIonChange={this.onChangeHandler('username')}
+                  value={this.state.username}
+                ></IonInput>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonTitle className="profile-settings-label">Your password</IonTitle>
+              <IonItem>
+                <IonInput
+                  onIonChange={this.onChangeHandler('password')}
+                  value={this.state.password}
+                  type="password"
+                ></IonInput>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonTitle className="profile-settings-label">Your Bio</IonTitle>
+              <IonItem>
+                <IonTextarea
+                  onIonChange={this.onChangeHandler('bio')}
+                  value={this.state.bio}
+                  autoGrow={true}
+                ></IonTextarea>
+              </IonItem>
+            </IonCard>
+            <IonCard className="profile-settings-submit">
+              <IonButton onClick={this.saveHandler}>Save setting</IonButton>
+              <IonButton color="danger" onClick={() => this.props.signOutAC()}>
+                Log out
+              </IonButton>
+            </IonCard>
+          </IonContent>
+          <IonFooter></IonFooter>
+        </IonPage>
       </>
     )
   }

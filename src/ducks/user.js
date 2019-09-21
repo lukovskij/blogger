@@ -101,7 +101,6 @@ export const toggleFollowSaga = function*() {
           },
         })
       }
-      console.log(res.data.profile)
       yield put({
         type: TOGGLE_FOLLOW_USER_SUCCESS,
         payload: {
@@ -120,14 +119,12 @@ export const toggleFollowSaga = function*() {
 export const getUserSaga = function*() {
   while (true) {
     let { payload } = yield take(GET_USER_REQUEST)
-    console.log('id', payload.id)
     try {
       let res = yield call(axios.get, `${API_ENDPOINT}profiles/${payload.id}`, {
         headers: {
           authorization: `Token ${window.localStorage.getItem('token')}`,
         },
       })
-      console.log('---from saga', res.data.profile)
       yield put({
         type: GET_USER_SUCCESS,
         payload: {

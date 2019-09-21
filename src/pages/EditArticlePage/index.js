@@ -8,7 +8,9 @@ import {
   IonButton,
   IonTextarea,
   IonChip,
+  IonPage,
   IonLabel,
+  IonFooter,
 } from '@ionic/react'
 import TitlePage from '../../components/TitlePage'
 import { connect } from 'react-redux'
@@ -93,59 +95,62 @@ class EditArticlePage extends Component {
     const { title, description, body, tagName, tagList } = this.state
     return (
       <>
-        <TitlePage>New Article</TitlePage>
-        <IonContent>
-          <IonCard>
-            <IonTitle className="add-article-label">Article name</IonTitle>
-            <IonItem className="add-article">
-              <IonInput
-                onIonChange={this.changeArticleFieldHandler('title')}
-                value={title}
-              ></IonInput>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonTitle className="add-article-label">Article description</IonTitle>
-            <IonItem className="add-article">
-              <IonInput
-                onIonChange={this.changeArticleFieldHandler('description')}
-                value={description}
-              ></IonInput>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonTitle className="add-article-label">Article Text</IonTitle>
-            <IonItem className="add-article">
-              <IonTextarea
-                onIonChange={this.changeArticleFieldHandler('body')}
-                value={body}
-                autoGrow={true}
-              ></IonTextarea>
-            </IonItem>
-          </IonCard>
-          <IonCard>
-            <IonTitle className="add-article-label">Tags</IonTitle>
-            <IonItem className="add-article">
-              <IonInput
-                onKeyPress={this.addTagHandler}
-                onIonChange={this.changeArticleFieldHandler('tagName')}
-                value={tagName}
-              ></IonInput>
-            </IonItem>
-            {tagList.map(it => (
-              <IonChip key={it} onClick={this.removeTagFromList(it)}>
-                <IonLabel>{it}</IonLabel>
-              </IonChip>
-            ))}
-          </IonCard>
-          <IonCard className="add-article-submit">
-            {this.props.computedMatch.params.editId ? (
-              <IonButton onClick={this.editArticle}>Edit article</IonButton>
-            ) : (
-              <IonButton onClick={this.addNewArticle}>Add article</IonButton>
-            )}
-          </IonCard>
-        </IonContent>
+        <IonPage>
+          <TitlePage>New Article</TitlePage>
+          <IonContent>
+            <IonCard>
+              <IonTitle className="add-article-label">Article name</IonTitle>
+              <IonItem className="add-article">
+                <IonInput
+                  onIonChange={this.changeArticleFieldHandler('title')}
+                  value={title}
+                ></IonInput>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonTitle className="add-article-label">Article description</IonTitle>
+              <IonItem className="add-article">
+                <IonInput
+                  onIonChange={this.changeArticleFieldHandler('description')}
+                  value={description}
+                ></IonInput>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonTitle className="add-article-label">Article Text</IonTitle>
+              <IonItem className="add-article">
+                <IonTextarea
+                  onIonChange={this.changeArticleFieldHandler('body')}
+                  value={body}
+                  autoGrow={true}
+                ></IonTextarea>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonTitle className="add-article-label">Tags</IonTitle>
+              <IonItem className="add-article">
+                <IonInput
+                  onKeyPress={this.addTagHandler}
+                  onIonChange={this.changeArticleFieldHandler('tagName')}
+                  value={tagName}
+                ></IonInput>
+              </IonItem>
+              {tagList.map(it => (
+                <IonChip key={it} onClick={this.removeTagFromList(it)}>
+                  <IonLabel>{it}</IonLabel>
+                </IonChip>
+              ))}
+            </IonCard>
+            <IonCard className="add-article-submit">
+              {this.props.computedMatch.params.editId ? (
+                <IonButton onClick={this.editArticle}>Edit article</IonButton>
+              ) : (
+                <IonButton onClick={this.addNewArticle}>Add article</IonButton>
+              )}
+            </IonCard>
+          </IonContent>
+          <IonFooter></IonFooter>
+        </IonPage>
       </>
     )
   }

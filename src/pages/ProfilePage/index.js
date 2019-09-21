@@ -6,6 +6,8 @@ import {
   IonCardSubtitle,
   IonAvatar,
   IonButton,
+  IonFooter,
+  IonPage,
 } from '@ionic/react'
 import { connect } from 'react-redux'
 import { moduleName as userModule, getUserAC, toggleFollowAC } from '../../ducks/user'
@@ -35,7 +37,6 @@ class ProfilePage extends Component {
     ],
   }
   componentDidMount() {
-    console.log(this.props.computedMatch.params.authorname)
     if (this.props.computedMatch.params.authorname) {
       this.props.getUserAC(this.props.computedMatch.params.authorname)
     }
@@ -46,7 +47,6 @@ class ProfilePage extends Component {
     }
   }
   closeArg = user => {
-    console.log(user, '------>')
     return ({ url }) => <ArticlesListContainer query={url + user} />
   }
   profileContent = () => {
@@ -94,8 +94,11 @@ class ProfilePage extends Component {
     const { loading } = this.props
     return (
       <>
-        <TitlePage>Profile</TitlePage>
-        {loading ? <Preloader show={loading} /> : this.profileContent()}
+        <IonPage>
+          <TitlePage>Profile</TitlePage>
+          {loading ? <Preloader show={loading} /> : this.profileContent()}
+          <IonFooter></IonFooter>
+        </IonPage>
       </>
     )
   }

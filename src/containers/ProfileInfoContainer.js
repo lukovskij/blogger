@@ -7,15 +7,16 @@ import { connect } from 'react-redux'
 
 class ProfileInfoContainer extends Component {
   componentDidMount() {
-    // this.props.getUserAC(this.props.username)
+    console.log(this.props.username)
+    this.props.getUserAC(this.props.username)
   }
   render() {
     const { username, ...pasProps } = this.props
-    console.log(this.props)
+
     return (
       <ProfileInfo
         {...pasProps}
-        author={this.props.article.author}
+        author={this.props.author}
         toggleLikeHandler={this.props.toggleArticleAC}
         togglFollowHandler={this.props.toggleFollowAC}
       />
@@ -24,9 +25,8 @@ class ProfileInfoContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state[userModule].user)
   return {
-    //author: state[userModule].user,
+    author: state[userModule].user,
     authUser: state[authModule].user,
     username: ownProps.article.author.username,
     ...ownProps,

@@ -17,7 +17,7 @@ export const REMOVE_COMMENT_ERROR = `${prefix}/REMOVE_COMMENT_ERROR`
 
 const defaultState = {
   comments: [],
-  loading: false,
+  loading: true,
   error: null,
 }
 
@@ -31,7 +31,7 @@ export default function(state = defaultState, action) {
       return { ...state, loading: true }
     case GET_COMMENTS_SUCCESS:
     case REMOVE_COMMENT_SUCCESS:
-      return { ...state, comments: [...payload.comments] }
+      return { ...state, comments: [...payload.comments], loading: false }
     case ADD_COMMENT_SUCCESS:
       return { ...state, comments: [payload.comment, ...state.comments] }
     case ADD_COMMENT_ERROR:
@@ -130,7 +130,6 @@ export const addCommentSaga = function*() {
 export const removeCommentSaga = function*() {
   while (true) {
     let { payload } = yield take(REMOVE_COMMENT_REQUEST)
-    console.log(payload)
     let res = yield call(
       axios.delete,
       `${API_ENDPOINT}articles/${payload.articleId}/comments/${payload.commentId}`,

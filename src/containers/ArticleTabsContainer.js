@@ -6,7 +6,6 @@ class ArticleTabsContainer extends Component {
     tabs: [...this.props.tabs],
   }
   changeTab = id => {
-    console.log(id)
     this.setState({
       tabs: this.state.tabs.map(it => {
         if (it.id === id) return { ...it, active: true }

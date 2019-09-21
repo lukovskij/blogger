@@ -47,7 +47,7 @@ export default function Article({ article, toggleLikeHandler, userId }) {
 
         {article.author.username === userId ? (
           <Link to={`/editor/${article.slug}`}>
-            <IonButton size="small" color="secondary">
+            <IonButton size="small" color="success">
               Edit
             </IonButton>
           </Link>

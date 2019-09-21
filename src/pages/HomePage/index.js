@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { IonToolbar, IonHeader, IonTitle, IonContent } from '@ionic/react'
+import { IonToolbar, IonHeader, IonTitle, IonContent, IonFooter, IonPage } from '@ionic/react'
 import ArticlesListContainer from '../../containers/ArticlesListContainer'
 import ArticleTabsContainer from '../../containers/ArticleTabsContainer'
 import { connect } from 'react-redux'
@@ -26,30 +26,32 @@ class HomePage extends Component {
   render() {
     return (
       <>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Home Page</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          {this.props.loggin ? (
-            <ArticleTabsContainer
-              tabs={this.state.tabs}
-              render={({ url }) => {
-                return <ArticlesListContainer query={url} />
-              }}
-            />
-          ) : (
-            <ArticlesListContainer query={''} />
-          )}
-        </IonContent>
+        <IonPage>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>New articles</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent>
+            {this.props.loggin ? (
+              <ArticleTabsContainer
+                tabs={this.state.tabs}
+                render={({ url }) => {
+                  return <ArticlesListContainer query={url} />
+                }}
+              />
+            ) : (
+              <ArticlesListContainer query={''} />
+            )}
+          </IonContent>
+          <IonFooter></IonFooter>
+        </IonPage>
       </>
     )
   }
 }
 
 const mapStateToProps = state => {
-  console.log(state[authModule].loggin)
   return {
     loggin: state[authModule].loggin,
   }

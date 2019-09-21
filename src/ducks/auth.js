@@ -134,7 +134,6 @@ export const signInSaga = function*() {
       let token = window.localStorage.getItem('token')
 
       if (token) {
-        console.log('call')
         let resUser = yield call(axios.get, `${API_ENDPOINT}user`, {
           headers: { authorization: `Token ${token}` },
         })

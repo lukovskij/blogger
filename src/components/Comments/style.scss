@@ -24,6 +24,10 @@
   display: flex;
   flex-wrap: wrap;
   border: 1px solid var(--ion-color-light-shade);
+  margin-bottom: 10px;
+  &:nth-last-of-type(1) {
+    margin-bottom: 0;
+  }
   &__text,
   &__options {
     width: 100%;

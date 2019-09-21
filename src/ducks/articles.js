@@ -30,9 +30,11 @@ export const REMOVE_ARTICLE_ERROR = `${prefix}/REMOVE_ARTICLE_ERROR`
 
 const defaultState = {
   entities: [],
-  loading: false,
+  loading: true,
   error: null,
-  article: {},
+  article: {
+    articleLoading: true,
+  },
   articlesCount: 0,
   articleToEdit: {
     title: null,
@@ -47,19 +49,22 @@ export default function(state = defaultState, action) {
 
   switch (type) {
     case GET_ARTICLES_REQUEST:
-    case SET_LIKE_REQUEST:
-    case GET_ARTICLE_REQUEST:
     case GET_EDIT_ARTICLE_REQUEST:
     case SEND_EDIT_ARTICLE_REQUEST:
     case ADD_ARTICLE_REQUEST:
     case REMOVE_ARTICLE_REQUEST:
       return { ...state, loading: true }
 
+    case GET_ARTICLE_REQUEST:
+      return { ...state, article: { articleLoading: true } }
+
+    case SET_LIKE_REQUEST:
+      return { ...state, loading: false }
+
     case GET_EDIT_ARTICLE_SUCCESS:
     case SEND_EDIT_ARTICLE_SUCCESS:
       return { ...state, loading: false, articleToEdit: { ...payload } }
     case GET_ARTICLES_SUCCESS: {
-      console.log(payload)
       return {
         ...state,
         loading: false,
@@ -68,7 +73,7 @@ export default function(state = defaultState, action) {
       }
     }
     case GET_ARTICLE_SUCCESS:
-      return { ...state, loading: false, article: payload.article }
+      return { ...state, article: { ...payload.article, articleLoading: false } }
 
     case ADD_ARTICLE_SUCCESS:
     case REMOVE_ARTICLE_SUCCESS:
@@ -90,11 +95,13 @@ export default function(state = defaultState, action) {
     case GET_EDIT_ARTICLE_ERROR:
     case SEND_EDIT_ARTICLE_ERROR:
     case GET_ARTICLES_ERROR:
-    case GET_ARTICLE_ERROR:
     case SET_LIKE_ERROR:
     case ADD_ARTICLE_ERROR:
     case REMOVE_ARTICLE_ERROR:
-      return { ...state, error: payload.error }
+      return { ...state, error: payload.error, loading: false }
+
+    case GET_ARTICLE_ERROR:
+      return { ...state, article: { articleLoading: false } }
 
     default:
       return state
@@ -374,7 +381,6 @@ const getAerticleSaga = function*() {
 // const likeArticleSaga = function*() {
 //   while (true) {
 //     const payload = yield take(SET_LIKE_REQUEST)
-//     console.log(payload)
 //   }
 // }
 

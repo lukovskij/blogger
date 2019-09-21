@@ -3,7 +3,6 @@ import { IonButton, IonButtons } from '@ionic/react'
 import './style.scss'
 
 export default function Tabs(props) {
-  console.log(props.render)
   return (
     <div className="article-tabs">
       <div className="article-tabs__header">
