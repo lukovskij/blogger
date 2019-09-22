@@ -1,5 +1,5 @@
 import React from 'react'
-import { IonAvatar, IonText, IonIcon, IonButton, IonButtons, IonToolbar } from '@ionic/react'
+import { IonAvatar, IonText, IonButton } from '@ionic/react'
 import moment from 'moment'
 import RemoveIco from '../../components/UI/Icons/RemoveIco'
 import { Link } from 'react-router-dom'

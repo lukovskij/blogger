@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { moduleName as commentModule, removeCommentAC, getCommentsAC } from '../ducks/comments'
 import { moduleName as articleModule } from '../ducks/articles'
 import { moduleName as authModule } from '../ducks/auth'
-import Preloader from '../components/Preloader'
 
 class CommentFormContainer extends Component {
   componentDidMount() {

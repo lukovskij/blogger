@@ -1,7 +1,8 @@
 import { appName, API_ENDPOINT } from '../config'
-import { take, call, all, put } from 'redux-saga/effects'
+import { take, call, all, put, takeEvery } from 'redux-saga/effects'
 import axios from 'axios'
 import { push } from 'connected-react-router'
+import { Record } from 'immutable'
 
 //module settings
 export const moduleName = 'auth'
@@ -21,36 +22,42 @@ export const CHECK_LOGGIN_USER = `${prefix}/CHECK_LOGGIN_USER`
 //action constants
 
 //reducer
-const defaultState = {
-  loading: true,
+const defaultUser = Record({
+  bio: null,
+  createdAt: null,
+  email: null,
+  id: null,
+  image: null,
+  token: null,
+  updatedAt: null,
+  username: null,
+})
+
+const defaultImmutableState = Record({
+  loading: false,
   loggin: false,
-  user: {
-    bio: null,
-    createdAt: null,
-    email: null,
-    id: null,
-    image: null,
-    token: null,
-    updatedAt: null,
-    username: null,
-  },
   error: null,
-}
-export default function(state = defaultState, action) {
+  user: new defaultUser(),
+})
+
+export default function(state = new defaultImmutableState(), action) {
   const { type, payload } = action
   switch (type) {
     case SIGN_IN_REQUEST:
     case SIGN_UP_REQUEST:
-      return { ...state, loading: true }
+      return state.set('loading', true)
     case SIGN_IN_SUCCESS:
     case SIGN_UP_SUCCESS:
-      return { ...state, loading: false, user: { ...payload.user }, error: null, loggin: true }
+      return state
+        .set('loading', false)
+        .set('user', new defaultUser({ ...payload.user }))
+        .set('loggin', true)
     case SIGN_OUT_SUCCES:
-      return { ...defaultState }
+      return new defaultImmutableState()
     case SIGN_IN_ERROR:
     case SIGN_UP_ERROR:
     case SIGN_OUT_ERROR:
-      return { ...state, error: payload.error, loading: false }
+      return state.set('error', payload.error).set('loading', false)
     default:
       return state
   }
@@ -180,5 +187,5 @@ export const signOutSaga = function*() {
 }
 
 export const saga = function*() {
-  yield all([signUpSaga(), signInSaga(), checkLogginUserSaga(), signOutSaga()])
+  yield all([checkLogginUserSaga(), signUpSaga(), signInSaga(), signOutSaga()])
 }
