@@ -2,6 +2,7 @@ import { appName, API_ENDPOINT } from '../config'
 import { call, take, put, all, select } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
 import axios from 'axios'
+import {Record, List} from 'immutable'
 
 export const moduleName = `articles`
 const prefix = `${appName}/${moduleName}`
@@ -43,6 +44,8 @@ const defaultState = {
     tagList: [],
   },
 }
+
+const 
 
 export default function(state = defaultState, action) {
   const { payload, type } = action
