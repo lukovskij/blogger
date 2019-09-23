@@ -6,9 +6,10 @@ import {
   removeCommentAC,
   getCommentsAC,
   getJsComments,
+  getCommentsState,
 } from '../ducks/comments'
-import { moduleName as articleModule } from '../ducks/articles'
-import { moduleName as authModule } from '../ducks/auth'
+import { getArticleSelector } from '../ducks/articles'
+import { getAuthUserSelector } from '../ducks/auth'
 
 class CommentFormContainer extends Component {
   componentDidMount() {
@@ -39,10 +40,10 @@ class CommentFormContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    comments: state[commentModule].comments,
-    authUser: state[authModule].user.username,
-    articleId: state[articleModule].article.slug,
-    loading: state[commentModule].loading,
+    comments: getJsComments(state),
+    authUser: getAuthUserSelector(state).username,
+    articleId: getArticleSelector(state).slug,
+    loading: getCommentsState(state).loading,
   }
 }
 export default connect(

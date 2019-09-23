@@ -23,6 +23,7 @@ class SettingsPage extends Component {
     username: this.props.user.username,
     password: '',
     bio: this.props.user.bio,
+    email: this.props.user.email,
   }
   onChangeHandler = type => {
     return e => {
@@ -55,6 +56,15 @@ class SettingsPage extends Component {
                 <IonInput
                   onIonChange={this.onChangeHandler('username')}
                   value={this.state.username}
+                ></IonInput>
+              </IonItem>
+            </IonCard>
+            <IonCard>
+              <IonTitle className="profile-settings-label">Your email</IonTitle>
+              <IonItem>
+                <IonInput
+                  onIonChange={this.onChangeHandler('email')}
+                  value={this.state.email}
                 ></IonInput>
               </IonItem>
             </IonCard>

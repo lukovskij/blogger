@@ -66,9 +66,10 @@ export default function(state = new defaultImmutableState(), action) {
 }
 
 //selectors
-export const stateSelector = state => state[moduleName]
+export const authSelector = state => state[moduleName]
+
 export const getAuthUserSelector = createSelector(
-  stateSelector,
+  authSelector,
   user => {
     return user.get('user')
   },

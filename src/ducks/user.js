@@ -174,16 +174,30 @@ export const editUserSaga = function*() {
   while (true) {
     let { payload } = yield take(EDIT_USER_REQUEST)
     try {
+      let objectToSend = {}
+
+      if (payload.password) {
+        objectToSend = {
+          username: payload.username,
+          email: payload.email,
+          password: payload.password,
+          image: payload.image,
+          bio: payload.bio,
+        }
+      } else {
+        objectToSend = {
+          username: payload.username,
+          email: payload.email,
+          image: payload.image,
+          bio: payload.bio,
+        }
+      }
       const res = yield call(
         axios.put,
         `${API_ENDPOINT}user`,
         {
           user: {
-            username: payload.username,
-            email: payload.email,
-            password: payload.password,
-            image: payload.image,
-            bio: payload.bio,
+            ...objectToSend,
           },
         },
         {

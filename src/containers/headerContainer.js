@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { moduleName, signOutAC } from '../ducks/auth'
+import { getAuthUserSelector, authSelector, signOutAC } from '../ducks/auth'
 
 export default function headerContainer(OriginalComponent) {
   class HeaderContainer extends Component {
@@ -31,8 +31,8 @@ export default function headerContainer(OriginalComponent) {
   }
   const mapStateToProps = state => {
     return {
-      loggin: state[moduleName].loggin,
-      user: state[moduleName].user,
+      loggin: authSelector(state),
+      user: getAuthUserSelector(state),
     }
   }
   return connect(

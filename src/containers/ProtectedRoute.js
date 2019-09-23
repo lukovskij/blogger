@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { moduleName as auth } from '../ducks/auth'
+import { authSelector } from '../ducks/auth'
 import { Route, Redirect } from 'react-router-dom'
 
 class ProtectedRoute extends Component {
@@ -13,7 +13,7 @@ class ProtectedRoute extends Component {
 
 const mapStateToProps = state => {
   return {
-    loggin: state[auth].loggin,
+    loggin: authSelector(state).loggin,
     location: state.router.location,
   }
 }

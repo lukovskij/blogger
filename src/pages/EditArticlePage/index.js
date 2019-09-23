@@ -30,7 +30,15 @@ class EditArticlePage extends Component {
     body: '',
     tagList: [],
   }
+  defaultState = {
+    tagName: '',
+    title: '',
+    description: '',
+    body: '',
+    tagList: [],
+  }
   componentDidMount() {
+    console.log(this.props.computedMatch.params.editId)
     let id = this.props.computedMatch.params.editId
     if (id) {
       this.props.getEditArticleAC(id)
@@ -52,6 +60,10 @@ class EditArticlePage extends Component {
         body: this.props.article.body,
         tagList: this.props.article.tagList,
       })
+    }
+    console.log(this.props.computedMatch.params.editId)
+    if (!this.props.computedMatch.params.editId && this.state.title) {
+      this.setState({ ...this.defaultState })
     }
   }
   changeArticleFieldHandler = type => e => {

@@ -7,7 +7,7 @@ import {
   toggleArticleAC,
   getArticlesSelector,
 } from '../ducks/articles'
-import { moduleName as authModule } from '../ducks/auth'
+import { getAuthUserSelector } from '../ducks/auth'
 import ArticlesList from '../components/ArticlesList'
 import Pagination from '../components/Pagination'
 import Preloader from '../components/Preloader'
@@ -59,9 +59,9 @@ class ArticleListContainer extends Component {
 const mapStateToProps = state => {
   return {
     articles: getArticlesSelector(state),
-    pageCount: state[articlesModule].articlesCount,
-    userId: state[authModule].user.username,
-    loading: state[articlesModule].loading,
+    pageCount: getArticlesSelector(state).articlesCount,
+    userId: getAuthUserSelector(state).username,
+    loading: getArticlesSelector(state).loading,
   }
 }
 export default connect(
