@@ -34,7 +34,7 @@ const defaultUser = Record({
 })
 
 const defaultImmutableState = Record({
-  loading: false,
+  loading: true,
   loggin: false,
   error: null,
   user: new defaultUser(),
@@ -53,7 +53,8 @@ export default function(state = new defaultImmutableState(), action) {
         .set('user', new defaultUser({ ...payload.user }))
         .set('loggin', true)
     case SIGN_OUT_SUCCES:
-      return new defaultImmutableState()
+      let prevState = new defaultImmutableState()
+      return prevState.set('loading', false)
     case SIGN_IN_ERROR:
     case SIGN_UP_ERROR:
     case SIGN_OUT_ERROR:

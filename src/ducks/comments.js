@@ -1,6 +1,8 @@
 import { appName, API_ENDPOINT } from '../config'
 import { take, call, all, put } from 'redux-saga/effects'
 import axios from 'axios'
+import { Record, List } from 'immutable'
+import { createSelector } from 'reselect'
 
 export const moduleName = 'comments'
 const prefix = `${appName}/${moduleName}`
@@ -15,29 +17,29 @@ export const REMOVE_COMMENT_REQUEST = `${prefix}/REMOVE_COMMENT_REQUEST`
 export const REMOVE_COMMENT_SUCCESS = `${prefix}/REMOVE_COMMENT_SUCCESS`
 export const REMOVE_COMMENT_ERROR = `${prefix}/REMOVE_COMMENT_ERROR`
 
-const defaultState = {
-  comments: [],
+const immutableDefaultState = Record({
+  comments: List([]),
   loading: true,
   error: null,
-}
+})
 
-export default function(state = defaultState, action) {
+export default function(state = new immutableDefaultState(), action) {
   const { payload, type } = action
 
   switch (type) {
     case ADD_COMMENT_REQUEST:
     case GET_COMMENTS_REQUEST:
     case REMOVE_COMMENT_REQUEST:
-      return { ...state, loading: true }
+      return state.set('loading', true)
     case GET_COMMENTS_SUCCESS:
     case REMOVE_COMMENT_SUCCESS:
-      return { ...state, comments: [...payload.comments], loading: false }
+      return state.set('comments', new List([...payload.comments])).set('loading', false)
     case ADD_COMMENT_SUCCESS:
-      return { ...state, comments: [payload.comment, ...state.comments] }
+      return state.set('comments', state.comments.unshift(payload.comment))
     case ADD_COMMENT_ERROR:
     case GET_COMMENTS_ERROR:
     case REMOVE_COMMENT_ERROR:
-      return { ...state, loading: false, error: payload.error }
+      return state.set('loading', false).set('error', payload.error)
     default:
       return state
   }
@@ -70,6 +72,17 @@ export const removeCommentAC = (commentId, articleId) => {
   }
 }
 
+// selectors
+export const getCommentsState = state => state[moduleName]
+export const getCommentsEntities = createSelector(
+  getCommentsState,
+  items => items.comments,
+)
+export const getJsComments = createSelector(
+  getCommentsEntities,
+  items => items.valueSeq().toArray(),
+)
+
 //saggas
 
 export const getCommentsSaga = function*() {
@@ -97,6 +110,7 @@ export const getCommentsSaga = function*() {
 export const addCommentSaga = function*() {
   while (true) {
     let { payload } = yield take(ADD_COMMENT_REQUEST)
+    console.log(payload)
     try {
       let res = yield call(
         axios.post,

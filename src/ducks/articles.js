@@ -2,7 +2,9 @@ import { appName, API_ENDPOINT } from '../config'
 import { call, take, put, all, select } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
 import axios from 'axios'
-import {Record, List} from 'immutable'
+import { Record, List } from 'immutable'
+import { setItemOfRecordToModel } from './utils'
+import { createSelector } from 'reselect'
 
 export const moduleName = `articles`
 const prefix = `${appName}/${moduleName}`
@@ -29,25 +31,56 @@ export const REMOVE_ARTICLE_REQUEST = `${prefix}/REMOVE_ARTICLE_REQUEST`
 export const REMOVE_ARTICLE_SUCCESS = `${prefix}/REMOVE_ARTICLE_SUCCESS`
 export const REMOVE_ARTICLE_ERROR = `${prefix}/REMOVE_ARTICLE_ERROR`
 
-const defaultState = {
-  entities: [],
+const articleOfArticlesRecord = Record({
+  author: {},
+  bio: null,
+  following: null,
+  image: null,
+  username: null,
+  body: null,
+  reatedAt: null,
+  description: null,
+  favorited: null,
+  favoritesCount: null,
+  slug: null,
+  tagList: [],
+  title: null,
+  updatedAt: null,
+})
+const articleRecord = Record({
+  articleLoading: true,
+  title: null,
+  description: null,
+  body: null,
+  tagList: [],
+  createdAt: null,
+  favorited: null,
+  favoritesCount: null,
+  slug: null,
+  updatedAt: null,
+  author: {
+    bio: null,
+    following: null,
+    image: null,
+    username: null,
+  },
+})
+const articleToEdit = Record({
+  title: null,
+  description: null,
+  body: null,
+  tagList: [],
+})
+const defaultImmutableState = Record({
+  entities: List(),
   loading: true,
   error: null,
-  article: {
-    articleLoading: true,
-  },
+  article: new articleRecord(),
   articlesCount: 0,
-  articleToEdit: {
-    title: null,
-    description: null,
-    body: null,
-    tagList: [],
-  },
-}
+  articleToEdit: new articleToEdit(),
+})
 
-const 
-
-export default function(state = defaultState, action) {
+export default function(state = new defaultImmutableState(), action) {
   const { payload, type } = action
 
   switch (type) {
@@ -56,44 +89,48 @@ export default function(state = defaultState, action) {
     case SEND_EDIT_ARTICLE_REQUEST:
     case ADD_ARTICLE_REQUEST:
     case REMOVE_ARTICLE_REQUEST:
-      return { ...state, loading: true }
+      return state.set('loading', true)
 
     case GET_ARTICLE_REQUEST:
-      return { ...state, article: { articleLoading: true } }
+      return state.setIn(['article', 'articleLoading'], true)
 
     case SET_LIKE_REQUEST:
-      return { ...state, loading: false }
+      return state.set('loading', false)
 
     case GET_EDIT_ARTICLE_SUCCESS:
     case SEND_EDIT_ARTICLE_SUCCESS:
-      return { ...state, loading: false, articleToEdit: { ...payload } }
+      return state.set('loading', false).set('articleToEdit', new articleToEdit({ ...payload }))
+
     case GET_ARTICLES_SUCCESS: {
-      return {
-        ...state,
-        loading: false,
-        entities: [...payload.articles],
-        articlesCount: payload.articlesCount,
-      }
+      const { articlesCount, articles, ...rest } = payload
+      return state
+        .set('loading', false)
+        .set('entities', setItemOfRecordToModel(articles, List, articleOfArticlesRecord))
+        .set('articlesCount', articlesCount)
     }
     case GET_ARTICLE_SUCCESS:
-      return { ...state, article: { ...payload.article, articleLoading: false } }
+      return state
+        .set('article', new articleRecord({ ...payload.article }))
+        .setIn(['article', 'articleLoading'], false)
 
     case ADD_ARTICLE_SUCCESS:
     case REMOVE_ARTICLE_SUCCESS:
-      return { ...state, loading: false }
+      return state.set('loading', false)
 
     case SET_LIKE_SUCCESS:
-      return {
-        ...state,
-        entities: [
-          ...state.entities.map(it => {
-            if (it.slug === payload.article.slug) return { ...payload.article }
+      return state
+        .set(
+          'entities',
+          state.entities.map(it => {
+            if (it.slug === payload.article.slug) {
+              return it
+                .set('favorited', payload.article.favorited)
+                .set('favoritesCount', payload.article.favoritesCount)
+            }
             return it
           }),
-        ],
-        article: { ...payload.article },
-        loading: false,
-      }
+        )
+        .set('loading', false)
 
     case GET_EDIT_ARTICLE_ERROR:
     case SEND_EDIT_ARTICLE_ERROR:
@@ -101,10 +138,10 @@ export default function(state = defaultState, action) {
     case SET_LIKE_ERROR:
     case ADD_ARTICLE_ERROR:
     case REMOVE_ARTICLE_ERROR:
-      return { ...state, error: payload.error, loading: false }
+      return state.set('error', payload.error).set('loading', false)
 
     case GET_ARTICLE_ERROR:
-      return { ...state, article: { articleLoading: false } }
+      return state.setIn(['article', 'articleLoading'], false)
 
     default:
       return state
@@ -172,6 +209,25 @@ export const removeArticleAC = id => {
   }
 }
 //selectors
+
+const stateSelector = state => state[moduleName]
+export const articleSelector = state => state[moduleName].article
+
+const getEntitiesSelector = createSelector(
+  stateSelector,
+  state => state.entities,
+)
+export const getArticlesSelector = createSelector(
+  getEntitiesSelector,
+  articles => {
+    return articles.toArray()
+  },
+)
+
+export const getArticleSelector = createSelector(
+  articleSelector,
+  article => article.toJS(),
+)
 
 //sagas
 const removeArticlSaga = function*() {

@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { IonCard } from '@ionic/react'
-import { moduleName as articlesModule, getArticlesAC, toggleArticleAC } from '../ducks/articles'
+import {
+  moduleName as articlesModule,
+  getArticlesAC,
+  toggleArticleAC,
+  getArticlesSelector,
+} from '../ducks/articles'
 import { moduleName as authModule } from '../ducks/auth'
 import ArticlesList from '../components/ArticlesList'
 import Pagination from '../components/Pagination'
@@ -53,7 +58,7 @@ class ArticleListContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    articles: state[articlesModule].entities,
+    articles: getArticlesSelector(state),
     pageCount: state[articlesModule].articlesCount,
     userId: state[authModule].user.username,
     loading: state[articlesModule].loading,

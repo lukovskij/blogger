@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import Comments from '../components/Comments/Comments'
 import { connect } from 'react-redux'
-import { moduleName as commentModule, removeCommentAC, getCommentsAC } from '../ducks/comments'
+import {
+  moduleName as commentModule,
+  removeCommentAC,
+  getCommentsAC,
+  getJsComments,
+} from '../ducks/comments'
 import { moduleName as articleModule } from '../ducks/articles'
 import { moduleName as authModule } from '../ducks/auth'
 
@@ -18,7 +23,6 @@ class CommentFormContainer extends Component {
     this.props.removeCommentAC(id, this.props.articleId)
   }
   render() {
-    console.log(this.props.articleId)
     return (
       <>
         {this.props.articleId && (
@@ -34,6 +38,7 @@ class CommentFormContainer extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(getJsComments(state))
   return {
     comments: state[commentModule].comments,
     authUser: state[authModule].user.username,

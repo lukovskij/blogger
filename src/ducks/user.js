@@ -2,6 +2,8 @@ import { appName, API_ENDPOINT } from '../config'
 import { take, call, all, put, select } from 'redux-saga/effects'
 import axios from 'axios'
 import { push } from 'connected-react-router'
+import { Record } from 'immutable'
+import { createSelector } from 'reselect'
 
 export const moduleName = 'user'
 const prefix = `${appName}/${moduleName}`
@@ -27,23 +29,35 @@ const defaultState = {
   error: null,
 }
 
-export default function(state = defaultState, action) {
+const userRecord = new Record({
+  bio: null,
+  following: null,
+  image: null,
+  username: null,
+})
+const immutableState = new Record({
+  user: new userRecord(),
+  loading: true,
+  error: null,
+})
+export default function(state = new immutableState(), action) {
   const { payload, type } = action
 
   switch (type) {
     case EDIT_USER_REQUEST:
     case GET_USER_REQUEST:
     case TOGGLE_FOLLOW_USER_REQUEST:
-      return { ...state, loading: true }
+      return state.set('loading', true)
     case EDIT_USER_SUCCESS:
     case GET_USER_SUCCESS:
-      return { ...state, loading: false, user: { ...payload }, error: null }
+      return state.set('loading', false).set('user', new userRecord({ ...payload }))
     case TOGGLE_FOLLOW_USER_SUCCESS:
-      return { ...state, loading: false, user: { ...payload } }
+      return state.set('loading', false).setIn(['user', 'following'], payload.following)
+
     case EDIT_USER_ERROR:
     case GET_USER_ERROR:
     case TOGGLE_FOLLOW_USER_ERROR:
-      return { ...state, error: payload.error, loading: false }
+      return state.set('error', payload.error).set('loading', false)
     default:
       return state
   }
@@ -74,6 +88,19 @@ export const toggleFollowAC = id => {
     },
   }
 }
+
+//selectors
+export const stateSelector = state => state[moduleName]
+export const userSelector = state => state[moduleName].get('user')
+export const loadingSelector = state => state[moduleName].loading
+export const errorSelector = state => state[moduleName].error
+export const getUserSelector = createSelector(
+  userSelector,
+  user => {
+    return user.toJS()
+  },
+)
+
 //saggas
 
 export const toggleFollowSaga = function*() {
