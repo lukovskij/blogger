@@ -3,6 +3,7 @@ import { take, call, all, put, takeEvery } from 'redux-saga/effects'
 import axios from 'axios'
 import { push } from 'connected-react-router'
 import { Record } from 'immutable'
+import { createSelector } from 'reselect'
 
 //module settings
 export const moduleName = 'auth'
@@ -65,7 +66,13 @@ export default function(state = new defaultImmutableState(), action) {
 }
 
 //selectors
-
+export const stateSelector = state => state[moduleName]
+export const getAuthUserSelector = createSelector(
+  stateSelector,
+  user => {
+    return user.get('user')
+  },
+)
 //action creators
 export const signUpAC = (username, email, password) => {
   return {

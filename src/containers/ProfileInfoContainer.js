@@ -1,22 +1,19 @@
 import React, { Component } from 'react'
 import ProfileInfo from '../components/ProfileInfo'
-import { moduleName as userModule, toggleFollowAC, getUserAC } from '../ducks/user'
-import { moduleName as authModule } from '../ducks/auth'
-import { toggleArticleAC } from '../ducks/articles'
+import { toggleFollowAC, getUserAC, getUserSelector } from '../ducks/user'
+import { getAuthUserSelector } from '../ducks/auth'
+import { toggleArticleAC, getArticleSelector } from '../ducks/articles'
 import { connect } from 'react-redux'
 
 class ProfileInfoContainer extends Component {
   componentDidMount() {
-    console.log(this.props.username)
-    this.props.getUserAC(this.props.username)
+    this.props.getUserAC(this.props.author)
   }
   render() {
-    const { username, ...pasProps } = this.props
-
     return (
       <ProfileInfo
-        {...pasProps}
-        author={this.props.author}
+        author={this.props.user}
+        article={this.props.article}
         toggleLikeHandler={this.props.toggleArticleAC}
         togglFollowHandler={this.props.toggleFollowAC}
       />
@@ -24,12 +21,12 @@ class ProfileInfoContainer extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    author: state[userModule].user,
-    authUser: state[authModule].user,
-    username: ownProps.article.author.username,
-    ...ownProps,
+    author: getArticleSelector(state).author.username,
+    authUser: getAuthUserSelector(state),
+    user: getUserSelector(state),
+    article: getArticleSelector(state),
   }
 }
 export default connect(

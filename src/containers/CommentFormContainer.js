@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import CommentForm from '../components/Comments/CommentForm'
 import { connect } from 'react-redux'
 import { addCommentAC } from '../ducks/comments'
-import { moduleName as articleModule, getArticleSelector } from '../ducks/articles'
+import { getArticleSelector } from '../ducks/articles'
 
 class CommentFormContainer extends Component {
   state = {
@@ -31,7 +31,6 @@ class CommentFormContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(getArticleSelector(state))
   return {
     articleId: getArticleSelector(state).slug,
   }

@@ -38,7 +38,6 @@ class CommentFormContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(getJsComments(state))
   return {
     comments: state[commentModule].comments,
     authUser: state[authModule].user.username,

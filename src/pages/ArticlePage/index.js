@@ -93,7 +93,7 @@ class ArticlePage extends Component {
             </IonButtons>
           )}
         </IonCard>
-        <ProfileInfoContainer article={this.props.article} />
+        <ProfileInfoContainer />
         <Comments />
       </>
     )

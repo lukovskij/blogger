@@ -110,7 +110,6 @@ export const getCommentsSaga = function*() {
 export const addCommentSaga = function*() {
   while (true) {
     let { payload } = yield take(ADD_COMMENT_REQUEST)
-    console.log(payload)
     try {
       let res = yield call(
         axios.post,

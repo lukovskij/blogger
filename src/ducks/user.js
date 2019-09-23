@@ -31,8 +31,12 @@ const defaultState = {
 
 const userRecord = new Record({
   bio: null,
-  following: null,
+  createdAt: null,
+  email: null,
+  id: null,
   image: null,
+  token: null,
+  updatedAt: null,
   username: null,
 })
 const immutableState = new Record({

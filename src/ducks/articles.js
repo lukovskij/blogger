@@ -102,7 +102,7 @@ export default function(state = new defaultImmutableState(), action) {
       return state.set('loading', false).set('articleToEdit', new articleToEdit({ ...payload }))
 
     case GET_ARTICLES_SUCCESS: {
-      const { articlesCount, articles, ...rest } = payload
+      const { articlesCount, articles } = payload
       return state
         .set('loading', false)
         .set('entities', setItemOfRecordToModel(articles, List, articleOfArticlesRecord))
@@ -130,6 +130,8 @@ export default function(state = new defaultImmutableState(), action) {
             return it
           }),
         )
+        .setIn(['article', 'favorited'], payload.article.favorited)
+        .setIn(['article', 'favoritesCount'], payload.article.favoritesCount)
         .set('loading', false)
 
     case GET_EDIT_ARTICLE_ERROR:
