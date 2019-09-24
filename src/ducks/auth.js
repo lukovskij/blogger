@@ -55,7 +55,7 @@ export default function(state = new defaultImmutableState(), action) {
         .set('loggin', true)
     case SIGN_OUT_SUCCES:
       let prevState = new defaultImmutableState()
-      return prevState.set('loading', false)
+      return prevState.set('loading', false).set('loggin', false)
     case SIGN_IN_ERROR:
     case SIGN_UP_ERROR:
     case SIGN_OUT_ERROR:
@@ -126,7 +126,7 @@ export const signUpSaga = function*() {
           password: payload.password,
         },
       })
-
+      window.localStorage.setItem('token', res.data.user.token)
       yield put({
         type: SIGN_UP_SUCCESS,
         payload: {

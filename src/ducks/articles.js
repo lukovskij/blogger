@@ -89,6 +89,7 @@ export default function(state = new defaultImmutableState(), action) {
     case SEND_EDIT_ARTICLE_REQUEST:
     case ADD_ARTICLE_REQUEST:
     case REMOVE_ARTICLE_REQUEST:
+      console.log('request')
       return state.set('loading', true)
 
     case GET_ARTICLE_REQUEST:
@@ -212,7 +213,7 @@ export const removeArticleAC = id => {
 }
 //selectors
 
-const stateSelector = state => state[moduleName]
+export const stateSelector = state => state[moduleName]
 export const articleSelector = state => state[moduleName].article
 
 const getEntitiesSelector = createSelector(

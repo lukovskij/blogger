@@ -15,57 +15,51 @@ import headerContainer from '../../containers/headerContainer'
 
 import './style.scss'
 
-class SideMenu extends Component {
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
-    return (
-      <IonMenu side="start" menuId="first" contentId="main">
-        <IonHeader>
-          <IonToolbar color="success">
-            <IonTitle>Start Menu</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          <IonList>
-            {this.props.links.map(link => (
-              <IonMenuToggle key={link.title} autoHide={false}>
-                <IonItem>
-                  <IonIcon name={link.icon}></IonIcon>
-                  {link.title.toLowerCase() === 'logout' ? (
-                    <NavLink
-                      exact
-                      activeClassName="active"
-                      onClick={() => {
-                        this.props.signOutHandler()
-                      }}
-                      replace
-                      className="sidemenu-link"
-                      to={link.path}
-                    >
-                      {link.title}
-                    </NavLink>
-                  ) : (
-                    <NavLink
-                      exact
-                      activeClassName="active"
-                      replace
-                      className="sidemenu-link"
-                      to={link.path}
-                    >
-                      {link.title}
-                    </NavLink>
-                  )}
-                </IonItem>
-              </IonMenuToggle>
-            ))}
-          </IonList>
-        </IonContent>
-      </IonMenu>
-    )
-  }
+function SideMenu(props) {
+  return (
+    <IonMenu side="start" menuId="first" contentId="main">
+      <IonHeader>
+        <IonToolbar color="success">
+          <IonTitle>Start Menu</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <IonList>
+          {props.links.map(link => (
+            <IonMenuToggle key={link.title} autoHide={false}>
+              <IonItem>
+                <IonIcon name={link.icon}></IonIcon>
+                {link.title.toLowerCase() === 'logout' ? (
+                  <NavLink
+                    exact
+                    activeClassName="active"
+                    onClick={() => {
+                      props.signOutHandler()
+                    }}
+                    replace
+                    className="sidemenu-link"
+                    to={link.path}
+                  >
+                    {link.title}
+                  </NavLink>
+                ) : (
+                  <NavLink
+                    exact
+                    activeClassName="active"
+                    replace
+                    className="sidemenu-link"
+                    to={link.path}
+                  >
+                    {link.title}
+                  </NavLink>
+                )}
+              </IonItem>
+            </IonMenuToggle>
+          ))}
+        </IonList>
+      </IonContent>
+    </IonMenu>
+  )
 }
 
 export default headerContainer(SideMenu)

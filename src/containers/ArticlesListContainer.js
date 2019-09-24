@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { IonCard } from '@ionic/react'
+
 import {
-  moduleName as articlesModule,
+  stateSelector,
   getArticlesAC,
   toggleArticleAC,
   getArticlesSelector,
@@ -59,9 +59,9 @@ class ArticleListContainer extends Component {
 const mapStateToProps = state => {
   return {
     articles: getArticlesSelector(state),
-    pageCount: getArticlesSelector(state).articlesCount,
+    pageCount: stateSelector(state).articlesCount,
     userId: getAuthUserSelector(state).username,
-    loading: getArticlesSelector(state).loading,
+    loading: stateSelector(state).loading,
   }
 }
 export default connect(

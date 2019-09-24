@@ -1,57 +1,47 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { IonInput, IonContent, IonItem, IonHeader, IonButton, IonList } from '@ionic/react'
 import { Link } from 'react-router-dom'
-export default class SignIn extends Component {
-  state = {
-    email: '',
-    password: '',
-    remember: false,
+import { sendDataHandler } from './utils'
+
+export default function SignIn(props) {
+  const [email, emailChange] = useState('')
+  const [password, passwordChange] = useState('')
+
+  const onChangeHandler = type => e => {
+    type(e.target.value)
   }
-  sendDataHandler = () => {
-    const { email, password, remember } = this.state
-    this.props.listener(email, password, remember)
-  }
-  onChangeHandler = type => e => {
-    if (type === 'remember') {
-      this.setState({ [type]: !this.state[type] })
-    } else {
-      this.setState({ [type]: e.target.value })
-    }
-  }
-  render() {
-    return (
-      <>
-        <IonContent padding>
-          <form>
-            <IonList>
-              <IonItem>
-                <IonInput
-                  onIonChange={this.onChangeHandler('email')}
-                  value={this.state.email}
-                  name="email"
-                  type="text"
-                  placeholder="Email"
-                />
-              </IonItem>
-              <IonItem>
-                <IonInput
-                  onIonChange={this.onChangeHandler('password')}
-                  value={this.state.password}
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                />
-              </IonItem>
-              <IonButton onClick={this.sendDataHandler} color="primary">
-                Sign In
-              </IonButton>
-              <IonButton color="success">
-                <Link to={`/auth/signup`}>Registration</Link>
-              </IonButton>
-            </IonList>
-          </form>
-        </IonContent>
-      </>
-    )
-  }
+  return (
+    <>
+      <IonContent padding>
+        <form>
+          <IonList>
+            <IonItem>
+              <IonInput
+                onIonChange={onChangeHandler(emailChange)}
+                value={email}
+                name="email"
+                type="text"
+                placeholder="Email"
+              />
+            </IonItem>
+            <IonItem>
+              <IonInput
+                onIonChange={onChangeHandler(passwordChange)}
+                value={password}
+                name="password"
+                type="password"
+                placeholder="Password"
+              />
+            </IonItem>
+            <IonButton onClick={sendDataHandler({ email, password }, props)} color="primary">
+              Sign In
+            </IonButton>
+            <IonButton color="success">
+              <Link to={`/auth/signup`}>Registration</Link>
+            </IonButton>
+          </IonList>
+        </form>
+      </IonContent>
+    </>
+  )
 }
