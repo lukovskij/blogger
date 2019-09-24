@@ -14,7 +14,7 @@ import TitlePage from '../../components/TitlePage'
 import './style.scss'
 import { connect } from 'react-redux'
 import { editUserAC } from '../../ducks/user'
-import { moduleName as authModule } from '../../ducks/auth'
+import { getAuthUser } from '../../ducks/auth'
 import { signOutAC } from '../../ducks/auth'
 
 class SettingsPage extends Component {
@@ -104,7 +104,7 @@ class SettingsPage extends Component {
 
 export default connect(
   state => ({
-    user: state[authModule].user,
+    user: getAuthUser(state),
   }),
   { editUserAC, signOutAC },
 )(SettingsPage)

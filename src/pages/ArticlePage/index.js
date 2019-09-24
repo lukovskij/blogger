@@ -17,8 +17,13 @@ import {
 } from '@ionic/react'
 import TitlePage from '../../components/TitlePage'
 import { connect } from 'react-redux'
-import { moduleName as articles, getArticleAC, removeArticleAC } from '../../ducks/articles'
-import { moduleName as authUser } from '../../ducks/auth'
+import {
+  getArticleSelector,
+  getArticleLoading,
+  getArticleAC,
+  removeArticleAC,
+} from '../../ducks/articles'
+import { getUserNameSelector } from '../../ducks/auth'
 import { push } from 'connected-react-router'
 import Comments from '../../components/Comments'
 import ProfileInfoContainer from '../../containers/ProfileInfoContainer'
@@ -102,9 +107,9 @@ class ArticlePage extends Component {
 
 const mapStateToProps = state => {
   return {
-    article: state[articles].article,
-    loading: state[articles].article.articleLoading,
-    authUser: state[authUser].user.username,
+    article: getArticleSelector(state),
+    loading: getArticleLoading(state),
+    authUser: getUserNameSelector(state),
   }
 }
 export default connect(

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ProfileInfo from '../components/ProfileInfo'
 import { toggleFollowAC, getUserAC, getUserSelector } from '../ducks/user'
 import { getAuthUserSelector } from '../ducks/auth'
-import { toggleArticleAC, getArticleSelector } from '../ducks/articles'
+import { toggleArticleAC, getArticleSelector, getArticleAuthorUsername } from '../ducks/articles'
 import { connect } from 'react-redux'
 
 class ProfileInfoContainer extends Component {
@@ -23,7 +23,7 @@ class ProfileInfoContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    author: getArticleSelector(state).author.username,
+    author: getArticleAuthorUsername(state),
     authUser: getAuthUserSelector(state),
     user: getUserSelector(state),
     article: getArticleSelector(state),

@@ -3,7 +3,7 @@ import { IonToolbar, IonHeader, IonTitle, IonContent, IonFooter, IonPage } from 
 import ArticlesListContainer from '../../containers/ArticlesListContainer'
 import ArticleTabsContainer from '../../containers/ArticleTabsContainer'
 import { connect } from 'react-redux'
-import { moduleName as authModule } from '../../ducks/auth'
+import { getLogginStatus } from '../../ducks/auth'
 
 class HomePage extends Component {
   state = {
@@ -53,7 +53,7 @@ class HomePage extends Component {
 
 const mapStateToProps = state => {
   return {
-    loggin: state[authModule].loggin,
+    loggin: getLogginStatus(state),
   }
 }
 export default connect(mapStateToProps)(HomePage)

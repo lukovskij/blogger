@@ -10,8 +10,8 @@ import {
   IonPage,
 } from '@ionic/react'
 import { connect } from 'react-redux'
-import { moduleName as userModule, getUserAC, toggleFollowAC } from '../../ducks/user'
-import { moduleName as authModule } from '../../ducks/auth'
+import { userSelector, getUserAC, toggleFollowAC, loadingSelector } from '../../ducks/user'
+import { getAuthUser } from '../../ducks/auth'
 import TitlePage from '../../components/TitlePage'
 import ArticlesListContainer from '../../containers/ArticlesListContainer'
 import ArticleTabsContainer from '../../containers/ArticleTabsContainer'
@@ -106,9 +106,9 @@ class ProfilePage extends Component {
 
 export default connect(
   state => ({
-    user: state[userModule].user,
-    authUser: state[authModule].user,
-    loading: state[userModule].loading,
+    user: userSelector(state),
+    authUser: getAuthUser(state),
+    loading: loadingSelector(state),
   }),
   { push, getUserAC, toggleFollowAC },
 )(ProfilePage)

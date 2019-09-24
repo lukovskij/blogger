@@ -67,6 +67,9 @@ export default function(state = new defaultImmutableState(), action) {
 
 //selectors
 export const authSelector = state => state[moduleName]
+export const getUserNameSelector = state => state[moduleName].get('user').username
+export const getAuthUser = state => state[moduleName].get('user')
+export const getLogginStatus = state => state[moduleName].loggin
 
 export const getAuthUserSelector = createSelector(
   authSelector,
@@ -74,6 +77,7 @@ export const getAuthUserSelector = createSelector(
     return user.get('user')
   },
 )
+
 //action creators
 export const signUpAC = (username, email, password) => {
   return {

@@ -215,6 +215,12 @@ export const removeArticleAC = id => {
 
 export const stateSelector = state => state[moduleName]
 export const articleSelector = state => state[moduleName].article
+export const getArticlesCount = state => state[moduleName].articlesCount
+export const getLoadingArticlesSelector = state => state[moduleName].loading
+export const getArticleId = state => state[moduleName].article.slug
+export const getArticleAuthorUsername = state => articleSelector(state).author.username
+export const getArticleLoading = state => articleSelector(state).articleLoading
+export const getArticleToEdit = state => stateSelector(state).articleToEdit
 
 const getEntitiesSelector = createSelector(
   stateSelector,

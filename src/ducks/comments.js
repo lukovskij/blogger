@@ -74,6 +74,8 @@ export const removeCommentAC = (commentId, articleId) => {
 
 // selectors
 export const getCommentsState = state => state[moduleName]
+export const getCommentsLoading = state => state[moduleName]
+
 export const getCommentsEntities = createSelector(
   getCommentsState,
   items => items.comments,

@@ -15,7 +15,7 @@ import {
 import TitlePage from '../../components/TitlePage'
 import { connect } from 'react-redux'
 import {
-  moduleName as articleModule,
+  getArticleToEdit,
   addArticleAC,
   getEditArticleAC,
   editArticleAC,
@@ -170,7 +170,7 @@ class EditArticlePage extends Component {
 
 export default connect(
   state => ({
-    article: state[articleModule].articleToEdit,
+    article: getArticleToEdit(state),
   }),
   { addArticleAC, getEditArticleAC, editArticleAC },
 )(EditArticlePage)

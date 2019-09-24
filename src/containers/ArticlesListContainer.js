@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import {
-  stateSelector,
+  getLoadingArticlesSelector,
   getArticlesAC,
   toggleArticleAC,
   getArticlesSelector,
 } from '../ducks/articles'
-import { getAuthUserSelector } from '../ducks/auth'
+import { getUserNameSelector } from '../ducks/auth'
 import ArticlesList from '../components/ArticlesList'
 import Pagination from '../components/Pagination'
 import Preloader from '../components/Preloader'
@@ -59,9 +59,9 @@ class ArticleListContainer extends Component {
 const mapStateToProps = state => {
   return {
     articles: getArticlesSelector(state),
-    pageCount: stateSelector(state).articlesCount,
-    userId: getAuthUserSelector(state).username,
-    loading: stateSelector(state).loading,
+    pageCount: getLoadingArticlesSelector(state),
+    userId: getUserNameSelector(state),
+    loading: getLoadingArticlesSelector(state),
   }
 }
 export default connect(
