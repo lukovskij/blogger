@@ -1,59 +1,45 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { IonInput, IonContent, IonItem, IonHeader, IonButton, IonList } from '@ionic/react'
-import { sendDataHandler } from './utils'
+import { IonContent, IonItem, IonButton, IonList } from '@ionic/react'
+import { sendDataHandler, validateEmail, validatePassword, validateUsername } from './utils'
+import { Formik, Form, Field } from 'formik'
 
 export default function SignUp(props) {
-  const [email, changeEmail] = useState('')
-  const [username, changeUsername] = useState('')
-  const [password, changePassword] = useState('')
-
-  const onChangeHandler = type => e => {
-    type(e.target.value)
-  }
   return (
     <>
       <IonContent padding>
-        <form>
-          <IonList>
-            <IonItem>
-              <IonInput
-                value={username}
-                name="username"
-                placeholder="Username"
-                type="text"
-                onIonChange={onChangeHandler(changeUsername)}
-              />
-            </IonItem>
-            <IonItem>
-              <IonInput
-                onIonChange={onChangeHandler(changeEmail)}
-                value={email}
-                name="email"
-                type="text"
-                placeholder="Email"
-              />
-            </IonItem>
-            <IonItem>
-              <IonInput
-                onIonChange={onChangeHandler(changePassword)}
-                value={password}
-                name="password"
-                type="password"
-                placeholder="Password"
-              />
-            </IonItem>
-            <IonButton
-              onClick={sendDataHandler({ username, email, password }, props)}
-              color="primary"
-            >
-              Sign Up
-            </IonButton>
-            <IonButton color="success">
-              <Link to="/auth/signin">Login</Link>
-            </IonButton>
-          </IonList>
-        </form>
+        <Formik
+          initialValues={{ email: '', password: '' }}
+          onSubmit={({ email, password }) => {
+            console.log(email, password, props)
+            sendDataHandler({ email, password }, props)()
+          }}
+        >
+          {({ errors, touched, isValidating }) => (
+            <IonList>
+              <Form>
+                <IonItem>
+                  <Field name="email" validate={validateEmail} />
+                  {errors.email && touched.email && <div>{errors.email}</div>}
+                </IonItem>
+                <IonItem>
+                  <Field name="password" type="password" validate={validateUsername} />
+                  {errors.username && touched.password && <div>{errors.username}</div>}
+                </IonItem>
+                <IonItem>
+                  <Field name="password" type="password" validate={validatePassword} />
+                  {errors.password && touched.password && <div>{errors.password}</div>}
+                </IonItem>
+                <IonButton type="submit" color="primary" disabled={!isValidating}>
+                  Sign Up
+                </IonButton>
+                <IonButton color="success">
+                  <Link to="/auth/signin">Login</Link>
+                </IonButton>
+              </Form>
+            </IonList>
+          )}
+        </Formik>
       </IonContent>
     </>
   )
